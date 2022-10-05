@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 
 // import routes
-const bootcamps = require('./routes/bootcamps');
+const bootcamps = require('./routes/bootcampsrout');
 
 // load env
 dotenv.config({path:'./config/config.env'});
@@ -13,7 +13,10 @@ connectDB();
 
 const app = express();
 
-app.use(morgan('dev'))
+//body parser
+app.use(express.json());
+
+app.use(morgan('dev'));
 //Mount routes
 app.use('/api/v1/bootcamps',bootcamps);
 
