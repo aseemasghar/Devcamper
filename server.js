@@ -6,6 +6,7 @@ const errorHandler = require('./middlewares/errorHandler');
 
 // import routes
 const bootcamps = require('./routes/bootcampsrout');
+const courses = require('./routes/coursesRout');
 
 // load env
 dotenv.config({path:'./config/config.env'});
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 //Mount routes
 app.use('/api/v1/bootcamps',bootcamps);
+app.use('/api/v1/courses',courses);
 
 app.use(errorHandler);
 

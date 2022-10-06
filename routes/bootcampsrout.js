@@ -8,6 +8,12 @@ const {
   deleteBootcamp,
 } = require("../controllers/bootcampsController");
 
+// import course router
+const coursesRout = require('./coursesRout');
+
+// Re_route 
+router.use('/:bootcamp/courses',coursesRout);
+
 // import controllers
 router.route("/").get(getAllBootcamps);
 router.route("/:id").get(getSingleBootcamp);
