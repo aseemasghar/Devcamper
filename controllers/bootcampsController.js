@@ -3,10 +3,11 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middlewares/asyncHandler');
 
 exports.getAllBootcamps =asyncHandler(async(req,res,next)=>{
-
-    const allBootcamps = await Bootcamps.find();
+const query = req.query;
+    const allBootcamps = await Bootcamps.find(query);
     res.status(200).json({
         success:true,
+        counter:allBootcamps.length,
         data:allBootcamps,
     })
 
