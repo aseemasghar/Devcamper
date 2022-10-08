@@ -3,16 +3,14 @@ const router = express.Router();
 const {
   getAllCourses,
   getSingleCourse,
-  createCourse,
   updateCourse,
   deleteCourse,
-} = require("../controllers/coursesController");
+} = require("../controllers/courseController");
 
 // import controllers
 router.route("/").get(getAllCourses);
-router.route("/:id").get(getSingleCourse);
-router.route("/").post(createCourse);
-router.route("/:id").put(updateCourse);
-router.route("/:id").delete(deleteCourse);
+router.route("/:courseid").get(getSingleCourse);
+router.route("/:id").put(updateCourse).delete(deleteCourse);
+
 
 module.exports = router;
