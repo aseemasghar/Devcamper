@@ -14,12 +14,26 @@ const {
   createCourse,
 } = require("../controllers/courseController");
 
+// Auth protect middleware
+const { protect, authRole } = require("../middlewares/auth");
 
 // Route to get all courses of specific bootcamp
-router.route("/:bootcampid/courses").get(getAllCourses).post(createCourse);
+router
+  .route("/:bootcampid/courses")
+  .get(getAllCourses)
+  .post(protect, createCourse);
 
 // Route controllers
-router.route("/").get(getAllBootcamps).post(createBootcamp);
-router.route("/:id").get(getSingleBootcamp).put(updateBootcamp).delete(deleteBootcamp);
-router.route('/:bootcampid/photo').put(bootcampFileUpload);
+router
+  .route("/")
+  .get(getAllBootcamps)
+  .post(protect, authRole("publisher", "admin"), createBootcamp);
+router
+  .route("/:id")
+  .get(getSingleBootcamp)
+  .put(protect, authRole("publisher", "admin"), updateBootcamp)
+  .delete(protect, deleteBootcamp);
+router
+  .route("/:bootcampid/photo")
+  .put(protect, authRole("publisher", "admin"), bootcampFileUpload);
 module.exports = router;

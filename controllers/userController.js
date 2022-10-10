@@ -37,11 +37,26 @@ exports.login = asyncHandler(async(req,res,next)=>{
         return next(new ErrorResponse(`Invalid Credentials`,401));
     }
 
-    //Creat token
+  sendTokenResponse(user,200,res);
+});
+
+exports.getMe = asyncHandler(async(req,res,next)=>{
+const user = await Users.findById(req.user.id);
+res.status(200).json({
+    success:true,
+    data:user
+})
+})
+
+//Get token from model create cookie and send response
+const sendTokenResponse= (user,statuscode,res)=>{
     const token = user.getJwtToken();
-    res.status(200).json({
+    const options = {
+        expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRE*24*60*60*1000),
+        httpOnly:true
+    };
+    res.status(statuscode).cookie('token',token,options).json({
         success:true,
-        // data:user,
         token
     });
-});
+};

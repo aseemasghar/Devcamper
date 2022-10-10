@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const errorHandler = require('./middlewares/errorHandler');
 
@@ -20,6 +21,9 @@ const app = express();
 
 //body parser
 app.use(express.json());
+
+//Cookie parser
+app.use(cookieParser());
 
 app.use(morgan('dev'));
 
