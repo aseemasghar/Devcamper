@@ -32,6 +32,8 @@ exports.getSingleBootcamp =asyncHandler(async(req,res,next)=>{
 })
 
 exports.createBootcamp =asyncHandler(async(req,res,next)=>{
+ 
+    req.body.user = req.user.id;
 
         const newBootcamp = await Bootcamps.create(req.body);
         res.status(201).json({
@@ -44,19 +46,25 @@ exports.createBootcamp =asyncHandler(async(req,res,next)=>{
 
 exports.updateBootcamp =asyncHandler(async(req,res,next)=>{
 
-    const updatedBootcamp = await Bootcamps.findByIdAndUpdate(req.params.id,req.body,{
+    let bootCamp = await Bootcamps.findById(req.params.id);
+  
+    if(!bootCamp){
+      return  next(new ErrorResponse(`Bootcamp is not found with id ${req.params.id}`,404));
+    }
+    if(bootCamp.user.toString()!=req.user.id){
+        return  next(new ErrorResponse(`Not authorized to update this bootcamp`,401));
+    }
+
+  bootCamp = await Bootcamps.findByIdAndUpdate(req.params.id,req.body,{
         new:true,
         runValidators:true,
     });
-    if(!updatedBootcamp){
-      return  next(new ErrorResponse(`Bootcamp is not found with id ${req.params.id}`,404));
-    }else{
         res.status(200).json({
             success:true,
             message: "Bootcamp Updated",
-            data:updatedBootcamp,
+            data:bootCamp,
         })
-    }
+    
 });
 
 exports.deleteBootcamp =asyncHandler(async(req,res,next)=>{
